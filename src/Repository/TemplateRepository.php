@@ -19,18 +19,6 @@ class TemplateRepository
         $this->repository = $this->documentManager->getRepository(Template::class);
     }
 
-    public function save(Template $template): void
-    {
-        $this->documentManager->persist($template);
-        $this->documentManager->flush();
-    }
-
-    public function remove(Template $template): void
-    {
-        $this->documentManager->remove($template);
-        $this->documentManager->flush();
-    }
-
     public function findById(string $id): ?Template
     {
         return $this->repository->find($id);

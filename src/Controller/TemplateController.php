@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Dto\CreateTemplateRequest;
 use App\Service\TemplateService;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +22,8 @@ class TemplateController extends AbstractController
     public function __construct(
         private readonly TemplateService $templateService,
         private readonly SerializerInterface $serializer,
-        private readonly ValidatorInterface $validator
+        private readonly ValidatorInterface $validator,
+        private readonly DocumentManager $documentManager
     ) {
     }
 
@@ -75,6 +77,8 @@ class TemplateController extends AbstractController
             }
 
             $template = $this->templateService->create($createRequest);
+            $this->documentManager->flush();
+
             $templateData = $this->serializer->normalize($template, 'json', [
                 'groups' => ['template:read']
             ]);
@@ -94,6 +98,7 @@ class TemplateController extends AbstractController
         }
 
         $this->templateService->delete($template);
+        $this->documentManager->flush();
 
         return new Response('', 204);
     }

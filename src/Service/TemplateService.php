@@ -8,13 +8,15 @@ use App\Document\Template;
 use App\Dto\CreateTemplateRequest;
 use App\Repository\CategoryRepository;
 use App\Repository\TemplateRepository;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use InvalidArgumentException;
 
 class TemplateService
 {
     public function __construct(
         private readonly TemplateRepository $templateRepository,
-        private readonly CategoryRepository $categoryRepository
+        private readonly CategoryRepository $categoryRepository,
+        private readonly DocumentManager $documentManager
     ) {
     }
 
@@ -36,7 +38,7 @@ class TemplateService
             ->setTemplateData($request->templateData)
         ;
 
-        $this->templateRepository->save($template);
+        $this->documentManager->persist($template);
 
         return $template;
     }
@@ -63,6 +65,6 @@ class TemplateService
 
     public function delete(Template $template): void
     {
-        $this->templateRepository->remove($template);
+        $this->documentManager->remove($template);
     }
 }
