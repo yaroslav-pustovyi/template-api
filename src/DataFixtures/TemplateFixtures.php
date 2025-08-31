@@ -27,10 +27,9 @@ class TemplateFixtures extends Fixture
         $manager->persist($businessCategory);
 
         // Create Starter Pack Template (Cartoon category)
-        $starterPackTemplate = new Template();
+        $starterPackTemplate = new Template($businessCategory);
         $starterPackTemplate->setName('Starter pack')
             ->setDisplayName('Starter pack')
-            ->setCategory($cartoonCategory)
             ->setPreview([
                 'aspectRatio' => 0.75,
                 'imageURL' => 'https://stage-cdn.example.com/image-to-image/templates/starter_pack_queen_3x4_v2.png'
@@ -64,10 +63,9 @@ class TemplateFixtures extends Fixture
             ]);
 
         // Create SMEG Blender Template (Business category)
-        $smegTemplate = new Template();
+        $smegTemplate = new Template($businessCategory);
         $smegTemplate->setName('SMEG Blender')
             ->setDisplayName('SMEG Blender')
-            ->setCategory($businessCategory)
             ->setPreview([
                 'aspectRatio' => 0.5625,
                 'imageURL' => 'https://stage-cdn.example.com/image-to-video/templates/68061499eaffe93c4e03ddc8.png',
@@ -116,10 +114,9 @@ class TemplateFixtures extends Fixture
     private function createAdditionalTemplates(ObjectManager $manager, Category $cartoonCategory, Category $businessCategory): void
     {
         // Additional cartoon template
-        $cartoonTemplate = new Template();
+        $cartoonTemplate = new Template($cartoonCategory);
         $cartoonTemplate->setName('Avatar Creator')
             ->setDisplayName('Avatar Creator')
-            ->setCategory($cartoonCategory)
             ->setPreview([
                 'aspectRatio' => 1.0,
                 'imageURL' => 'https://example.com/avatar-preview.png'
@@ -144,10 +141,9 @@ class TemplateFixtures extends Fixture
             ]);
 
         // Additional business template
-        $businessTemplate = new Template();
+        $businessTemplate = new Template($businessCategory);
         $businessTemplate->setName('Product Showcase')
             ->setDisplayName('Product Showcase')
-            ->setCategory($businessCategory)
             ->setPreview([
                 'aspectRatio' => 1.77,
                 'imageURL' => 'https://example.com/product-showcase.png'
