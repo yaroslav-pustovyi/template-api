@@ -9,6 +9,7 @@ use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[MongoDB\Document(collection: 'categories')]
@@ -16,25 +17,31 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Category
 {
     #[MongoDB\Id]
+    #[Groups(['category:read', 'category:list', 'template:list'])]
     private ?string $id = null;
 
     #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
+    #[Groups(['category:read', 'category:list', 'template:list'])]
     private string $name;
 
     #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
+    #[Groups(['category:read', 'category:list', 'template:list'])]
     private string $displayName;
 
     #[MongoDB\ReferenceMany(targetDocument: Template::class, mappedBy: 'category')]
+    #[Groups(['category:read'])]
     private Collection $templates;
 
     #[MongoDB\Field(type: 'date_immutable')]
+    #[Groups(['category:read', 'category:list'])]
     private DateTimeImmutable $createdAt;
 
     #[MongoDB\Field(type: 'date_immutable')]
+    #[Groups(['category:read', 'category:list'])]
     private DateTimeImmutable $updatedAt;
 
     public function __construct()

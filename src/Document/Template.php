@@ -6,41 +6,51 @@ namespace App\Document;
 
 use DateTimeImmutable;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[MongoDB\Document(collection: 'templates')]
 class Template
 {
     #[MongoDB\Id]
+    #[Groups(['template:read', 'template:list'])]
     private ?string $id = null;
 
     #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
+    #[Groups(['template:read', 'template:list'])]
     private string $name;
 
     #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
+    #[Groups(['template:read', 'template:list'])]
     private string $displayName;
 
     #[MongoDB\ReferenceOne(targetDocument: Category::class, inversedBy: 'templates')]
-    private ?Category $category = null;
+    #[Groups(['template:read', 'template:list'])]
+    private Category $category;
 
     #[MongoDB\Field(type: 'hash')]
+    #[Groups(['template:read', 'template:list'])]
     private array $preview = [];
 
     #[MongoDB\Field(type: 'hash')]
+    #[Groups(['template:read', 'template:list'])]
     private array $templateData = [];
 
     #[MongoDB\Field(type: 'date_immutable')]
-    private \DateTimeInterface $createdAt;
+    #[Groups(['template:read', 'template:list'])]
+    private DateTimeImmutable $createdAt;
 
     #[MongoDB\Field(type: 'date_immutable')]
-    private \DateTimeInterface $updatedAt;
+    #[Groups(['template:read', 'template:list'])]
+    private DateTimeImmutable $updatedAt;
 
-    public function __construct()
+    public function __construct(Category $category)
     {
+        $this->category = $category;
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
     }
